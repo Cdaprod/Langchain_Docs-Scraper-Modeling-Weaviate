@@ -1,0 +1,22 @@
+version: '3.4'
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - 8080:8080
+    environment:
+      - WEAVIATE_HOST=localhost
+      - WEAVIATE_PORT=8080
+      - WEAVIATE_SCHEME=http
+      - WEAVIATE_AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+
+  python-app:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - WEAVIATE_HOST=weaviate
+      - WEAVIATE_PORT=8080
+      - WEAVIATE_SCHEME=http
+    depends_on:
+      - weaviate
